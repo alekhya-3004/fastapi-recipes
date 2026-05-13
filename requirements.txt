@@ -1,0 +1,4 @@
+# This file lists the dependencies for the FastAPI application.
+fastapi
+uvicorn
+jinja2
