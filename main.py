@@ -88,6 +88,20 @@ def search_recipes_by_keyword(keyword: str, limit: Optional[int]=10, db: Session
     recipes = db.query(Recipe).filter(Recipe.label.ilike(f"%{keyword}%")).limit(limit).all()
     return recipes
 
+# DELETE API
+# This API deletes a recipe from the database using its ID.
+@api_router.delete("/recipe/{recipe_id}", status_code=200)
+def delete_recipe(recipe_id: int, db: Session = Depends(get_db)) -> dict:
+    """
+    Delete a recipe from the database using its ID.
+    """
+    recipe = db.query(Recipe).filter(Recipe.id == recipe_id).first()
+    if not recipe:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    db.delete(recipe)
+    db.commit()
+    return {"msg": f"Recipe {recipe_id} deleted successfully"}
+
 # POST API
 # This API takes recipe data from the user, creates a new recipe, stores it, and returns it.
 @api_router.post("/recipe/",status_code=201)
