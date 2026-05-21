@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from database import get_db, engine
 from models import Recipe, Base
-from schemas import RecipeCreate
+from schemas import RecipeCreate, Recipe as RecipeSchema
 
 # create all tables in the database if they don't exist
 Base.metadata.create_all(bind=engine)
@@ -104,8 +104,8 @@ def delete_recipe(recipe_id: int, db: Session = Depends(get_db)) -> dict:
 
 # POST API
 # This API takes recipe data from the user, creates a new recipe, stores it, and returns it.
-@api_router.post("/recipe/",status_code=201)
-def create_recipe(recipe: RecipeCreate, db: Session = Depends(get_db)) -> dict:
+@api_router.post("/recipe/", status_code=201, response_model=RecipeSchema)
+def create_recipe(recipe: RecipeCreate, db: Session = Depends(get_db)):
     """
     This API takes recipe data from the user, creates a new recipe, stores it, and returns it.
     """

@@ -1,13 +1,15 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, HttpUrl, ConfigDict
 from typing import Sequence
 
 # define a Pydantic base model for a recipe
 # main model- output model
 class Recipe(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id:int
     label:str
     source:str
-    url:HttpUrl
+    url:str
 
 # define a Pydantic model for search results, which contains a sequence of Recipe objects
 # this wraps list of recipes
